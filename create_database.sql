@@ -7,7 +7,8 @@ CREATE TABLE endereco (
 	uf CHAR (2),
 	cidade VARCHAR (255),
 	bairro VARCHAR(255),
-	logradouro VARCHAR (255)
+	logradouro VARCHAR (255),
+    IGNORE
 );
 
 CREATE TABLE cliente (
