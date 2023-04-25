@@ -12,7 +12,7 @@ CREATE TABLE endereco (
 
 CREATE TABLE cliente (
 	cpf CHAR(11) PRIMARY KEY,
-	cep CHAR(8), FOREIGN KEY cep REFERENCES endereco(cep),
+	cep CHAR(8), FOREIGN KEY (cep) REFERENCES endereco(cep),
 	complemento VARCHAR (255),
 	nome VARCHAR (255),
 	dataNasc DATE,
@@ -23,7 +23,7 @@ CREATE TABLE cliente (
 
 CREATE TABLE compra (
 	codigo INT AUTO_INCREMENT PRIMARY KEY,
-	cpfCliente CHAR(11), FOREIGN KEY cpfCliente REFERENCES cliente(cpf),
+	cpfCliente CHAR(11), FOREIGN KEY (cpfCliente) REFERENCES cliente(cpf),
 	dataCompra DATE
 );
 
@@ -34,14 +34,14 @@ CREATE TABLE lote (
 
 CREATE TABLE produto (
 	codigo INT PRIMARY KEY,
-	codLote INT, FOREIGN KEY codLote REFERENCES lote(codigo),
+	codLote INT, FOREIGN KEY (codLote) REFERENCES lote(codigo),
 	peso FLOAT(6,4),
 	volume FLOAT (6,4),
 	preco FLOAT (4,2)
 );
 
-CREATE item (
+CREATE TABLE item (
 	codigo INT PRIMARY KEY,
-	codCompra INT, FOREIGN KEY codCompra REFERENCES compra(codigo),
-	codProduto INT, FOREIGN KEY codProduto REFERENCES produto(codigo),
+	codCompra INT, FOREIGN KEY (codCompra) REFERENCES compra(codigo),
+	codProduto INT, FOREIGN KEY (codProduto) REFERENCES produto(codigo),
 	quantidade INT(4));
