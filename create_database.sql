@@ -10,8 +10,6 @@ CREATE TABLE endereco (
 	logradouro VARCHAR (255)
 );
 
-
-
 CREATE TABLE cliente (
 	cpf CHAR(11) PRIMARY KEY,
 	cep CHAR(8), FOREIGN KEY (cep) REFERENCES endereco(cep),
