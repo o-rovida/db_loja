@@ -7,9 +7,10 @@ CREATE TABLE endereco (
 	uf CHAR (2),
 	cidade VARCHAR (255),
 	bairro VARCHAR(255),
-	logradouro VARCHAR (255),
-    IGNORE
+	logradouro VARCHAR (255)
 );
+
+
 
 CREATE TABLE cliente (
 	cpf CHAR(11) PRIMARY KEY,
@@ -19,30 +20,31 @@ CREATE TABLE cliente (
 	dataNasc DATE,
 	profissao VARCHAR (255),
 	email VARCHAR (255) UNIQUE,
-	telefone VARCHAR (255) UNIQUE
+	telefone VARCHAR (255) UNIQUE,
+	sexo CHAR (1)
 );
 
 CREATE TABLE compra (
-	codigo INT AUTO_INCREMENT PRIMARY KEY,
+	codigo SMALLINT AUTO_INCREMENT PRIMARY KEY,
 	cpfCliente CHAR(11), FOREIGN KEY (cpfCliente) REFERENCES cliente(cpf),
 	dataCompra DATE
 );
 
 CREATE TABLE lote (
-	codigo INT PRIMARY KEY,
+	codigo SMALLINT PRIMARY KEY,
 	dataFab DATE,
 	dataValidade DATE);
 
 CREATE TABLE produto (
-	codigo INT PRIMARY KEY,
-	codLote INT, FOREIGN KEY (codLote) REFERENCES lote(codigo),
+	codigo SMALLINT AUTO_INCREMENT PRIMARY KEY,
+	codLote SMALLINT, FOREIGN KEY (codLote) REFERENCES lote(codigo),
 	peso FLOAT(6,4),
 	volume FLOAT (6,4),
 	preco FLOAT (4,2)
 );
 
 CREATE TABLE item (
-	codigo INT PRIMARY KEY,
-	codCompra INT, FOREIGN KEY (codCompra) REFERENCES compra(codigo),
-	codProduto INT, FOREIGN KEY (codProduto) REFERENCES produto(codigo),
-	quantidade INT(4));
+	codigo SMALLINT AUTO_INCREMENT PRIMARY KEY,
+	codCompra SMALLINT, FOREIGN KEY (codCompra) REFERENCES compra(codigo),
+	codProduto SMALLINT, FOREIGN KEY (codProduto) REFERENCES produto(codigo),
+	quantidade SMALLINT(4));
