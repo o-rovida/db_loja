@@ -108,7 +108,7 @@ FROM endereco, cliente
 --joins
 WHERE endereco.cep = cliente.cep
 --order
-ORDER BY endereco.cidade;
+ORDER BY endereco.cidade ASC;
 
 -- 9 Profissão de todos os clientes que são professores, engenheiros, ou gestores.
 SELECT DISTINCT
@@ -121,14 +121,80 @@ OR profissao LIKE '%engenheiro%'
 OR profissao LIKE '%gestor%';
 
 -- 10 Nome da rua dos clientes que compram queijo com valor maior que R$ 5,00 e menor que R$ 25,00.
+SELECT DISTINCT 
+    endereco.logradouro
+FROM endereco, cliente, compra, item, produto
+--joins
+WHERE endereco.cep = cliente.cep
+AND cliente.cpf = compra.cpfCliente
+AND compra.codigo = item.codCompra
+AND item.codProduto = produto.codigo
+--filters
+AND produto.descricao LIKE '%queijo%'
+AND produto.preco BETWEEN 5 AND 25;
 
 -- 11 Nome, Profissão e Sexo dos clientes que compram mais de 4 litros de leite cujo valor esteja entre R$ 1,00 e R$ 1,80.
+SELECT 
+    cliente.nome, 
+    cliente.profissao,
+    cliente.sexo 
+FROM cliente, compra, item, produto
+--joins
+WHERE cliente.cpf = compra.cpfCliente
+AND compra.codigo = item.codCompra
+AND item.codProduto = produto.codigo
+--filters
+AND produto.descricao LIKE '%leite%' AND produto.preco BETWEEN 1 AND 1.8
+--group
+GROUP BY cliente.nome
+--filters
+HAVING sum((item.quantidade*produto.volume)) > 4;
 
 -- 12 Nome, Profissão e Sexo dos clientes que compram mais de 4 litros de leite cujo valor esteja entre R$ 1,00 e R$ 1,80, ordenados pelo sexo.
+SELECT 
+    cliente.nome, 
+    cliente.profissao,
+    cliente.sexo 
+FROM cliente, compra, item, produto
+--joins
+WHERE cliente.cpf = compra.cpfCliente
+AND compra.codigo = item.codCompra
+AND item.codProduto = produto.codigo
+--filters
+AND produto.descricao LIKE '%leite%' AND produto.preco BETWEEN 1 AND 1.8
+--group
+GROUP BY cliente.nome
+--filters
+HAVING sum((item.quantidade*produto.volume)) > 4
+--order
+ORDER BY cliente.sexo ASC;
 
 -- 13 Profissão dos clientes que compram leite e queijo, ordenado pelo Nome em ordem crescente.
+SELECT DISTINCT
+    cliente.nome, 
+    cliente.profissao
+FROM cliente, compra, item, produto
+--joins
+WHERE cliente.cpf = compra.cpfCliente
+AND compra.codigo = item.codCompra
+AND item.codProduto = produto.codigo
+--filters
+AND (produto.descricao LIKE '%leite%' OR produto.descricao LIKE '%queijo%')
+--order
+ORDER BY cliente.nome ASC;
 
 -- 14 Produtos comprados pelos clientes que moram em Curitiba e que compram em quantidade maior que 5 unidades.
+SELECT DISTINCT
+    produto.descricao
+FROM endereco, cliente, compra, item, produto
+--joins
+WHERE endereco.cep = cliente.cep
+and cliente.cpf = compra.cpfCliente
+AND compra.codigo = item.codCompra
+AND item.codProduto = produto.codigo
+--filters
+AND endereco.cidade = 'Curitiba'
+AND item.quantidade > 5;
 
 -- 15 Soma de todas as compras realizadas pelos clientes que moram em Curitiba.
 
