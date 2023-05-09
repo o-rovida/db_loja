@@ -71,8 +71,7 @@ AND item.codProduto = produto.codigo
 --filters
 AND produto.descricao LIKE '%queijo%'
 GROUP BY cliente.nome
-HAVING sum(item.quantidade) > 5) as queijo
-INNER JOIN
+HAVING sum(item.quantidade) > 5) as queijo,
 (SELECT 
     DISTINCT cliente.nome
 FROM cliente, compra, item, produto
@@ -83,7 +82,7 @@ AND item.codProduto = produto.codigo
 --filters
 AND produto.descricao LIKE '%leite%'
 GROUP BY cliente.nome
-HAVING sum((item.quantidade*produto.volume))> 3) as leite ON queijo.nome = leite.nome;
+HAVING sum((item.quantidade*produto.volume))> 3) as leite WHERE queijo.nome = leite.nome;
 
 -- 8 Cidade onde moram os clientes, em ordem alfabética crescente.
 
