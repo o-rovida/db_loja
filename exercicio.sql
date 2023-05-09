@@ -61,30 +61,48 @@ WHERE produto.codigo = item.codProduto
 AND produto.preco > 10;
 
 -- 7 Nome das pessoas que compraram mais de 5 peças de queijo e mais de 3 litros de leite.
-SELECT leite.nome FROM (SELECT 
-    DISTINCT cliente.nome
-FROM cliente, compra, item, produto
---joins
-WHERE cliente.cpf = compra.cpfCliente
-AND compra.codigo = item.codCompra
-AND item.codProduto = produto.codigo
---filters
-AND produto.descricao LIKE '%queijo%'
-GROUP BY cliente.nome
-HAVING sum(item.quantidade) > 5) as queijo,
-(SELECT 
-    DISTINCT cliente.nome
-FROM cliente, compra, item, produto
---joins
-WHERE cliente.cpf = compra.cpfCliente
-AND compra.codigo = item.codCompra
-AND item.codProduto = produto.codigo
---filters
-AND produto.descricao LIKE '%leite%'
-GROUP BY cliente.nome
-HAVING sum((item.quantidade*produto.volume))> 3) as leite WHERE queijo.nome = leite.nome;
+SELECT 
+    DISTINCT leite.nome 
+FROM (
+        SELECT 
+            DISTINCT cliente.nome
+        FROM cliente, compra, item, produto
+        --joins
+        WHERE cliente.cpf = compra.cpfCliente
+        AND compra.codigo = item.codCompra
+        AND item.codProduto = produto.codigo
+        --filters
+        AND produto.descricao LIKE '%queijo%'
+        GROUP BY cliente.nome
+        HAVING sum(item.quantidade) > 5
+    ) 
+    as queijo,
+    
+    (
+        SELECT 
+            DISTINCT cliente.nome
+        FROM cliente, compra, item, produto
+        --joins
+        WHERE cliente.cpf = compra.cpfCliente
+        AND compra.codigo = item.codCompra
+        AND item.codProduto = produto.codigo
+        --filters
+        AND produto.descricao LIKE '%leite%'
+        GROUP BY cliente.nome
+        HAVING sum((item.quantidade*produto.volume)) > 3
+    ) 
+    as leite 
+
+WHERE queijo.nome = leite.nome;
 
 -- 8 Cidade onde moram os clientes, em ordem alfabética crescente.
+SELECT 
+    DISTINCT endereco.cidade 
+FROM endereco, cliente
+--joins
+WHERE endereco.cep = cliente.cep
+--order
+ORDER BY endereco.cidade;
 
 -- 9 Profissão de todos os clientes que são professores, engenheiros, ou gestores.
 
