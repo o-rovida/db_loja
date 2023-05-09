@@ -111,6 +111,14 @@ WHERE endereco.cep = cliente.cep
 ORDER BY endereco.cidade;
 
 -- 9 Profissão de todos os clientes que são professores, engenheiros, ou gestores.
+SELECT DISTINCT
+    nome, 
+    profissao
+FROM cliente
+--filters
+WHERE profissao LIKE '%professor%' 
+OR profissao LIKE '%engenheiro%' 
+OR profissao LIKE '%gestor%';
 
 -- 10 Nome da rua dos clientes que compram queijo com valor maior que R$ 5,00 e menor que R$ 25,00.
 
