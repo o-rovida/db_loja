@@ -38,7 +38,8 @@ CREATE TABLE produto (
 	codLote SMALLINT, FOREIGN KEY (codLote) REFERENCES lote(codigo),
 	peso FLOAT(6,4),
 	volume FLOAT (6,4),
-	preco FLOAT (4,2)
+	preco FLOAT (4,2),
+	descricao VARCHAR(255)
 );
 
 CREATE TABLE item (
