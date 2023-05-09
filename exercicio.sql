@@ -44,10 +44,46 @@ AND cliente.sexo = 'M'
 AND endereco.cidade = 'Guarapuava';
 
 -- 5 Sexo das pessoas que moram na cidade que começa com a letra “G” e com a letra “C”.
+SELECT endereco.cidade, cliente.sexo, cliente.nome FROM endereco, cliente
+--joins
+WHERE cliente.cep = endereco.cep
+--filters
+AND (endereco.cidade LIKE 'G%'
+OR endereco.cidade LIKE 'C%')
+--order
+ORDER BY endereco.cidade, cliente.sexo;
 
 -- 6 Quantidade total de produtos adquiridos com preço maior que R$ 10,00.
+SELECT SUM(quantidade) as 'Produtos Total' FROM produto, item
+--joins
+WHERE produto.codigo = item.codProduto
+--filters
+AND produto.preco > 10;
 
 -- 7 Nome das pessoas que compraram mais de 5 peças de queijo e mais de 3 litros de leite.
+SELECT leite.nome FROM (SELECT 
+    DISTINCT cliente.nome
+FROM cliente, compra, item, produto
+--joins
+WHERE cliente.cpf = compra.cpfCliente
+AND compra.codigo = item.codCompra
+AND item.codProduto = produto.codigo
+--filters
+AND produto.descricao LIKE '%queijo%'
+GROUP BY cliente.nome
+HAVING sum(item.quantidade) > 5) as queijo
+INNER JOIN
+(SELECT 
+    DISTINCT cliente.nome
+FROM cliente, compra, item, produto
+--joins
+WHERE cliente.cpf = compra.cpfCliente
+AND compra.codigo = item.codCompra
+AND item.codProduto = produto.codigo
+--filters
+AND produto.descricao LIKE '%leite%'
+GROUP BY cliente.nome
+HAVING sum((item.quantidade*produto.volume))> 3) as leite ON queijo.nome = leite.nome;
 
 -- 8 Cidade onde moram os clientes, em ordem alfabética crescente.
 
