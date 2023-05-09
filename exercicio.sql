@@ -1,7 +1,7 @@
 -- Active: 1683657116431@@127.0.0.1@3306@db_loja
 -- 1 Todos os produtos comprados com quantidade maior que 12.
-SELECT 
-    DISTINCT produto.descricao 
+SELECT DISTINCT 
+    produto.descricao 
 FROM produto, item 
 --joins
 WHERE produto.codigo = item.codProduto 
@@ -9,8 +9,8 @@ WHERE produto.codigo = item.codProduto
 AND item.quantidade > 12;
 
 -- 2 Nome dos clientes que compraram mais de 23 peças de queijo.
-SELECT 
-    DISTINCT cliente.nome 
+SELECT DISTINCT 
+    cliente.nome 
 FROM cliente, compra, item, produto 
 --joins
 WHERE cliente.cpf = compra.cpfCliente 
@@ -21,8 +21,8 @@ AND produto.descricao LIKE '%queijo%'
 AND item.quantidade > 23;
 
 -- 3 Cidade onde moram as pessoas que compram produtos com validade sempre menor que 3 meses.
-SELECT
-    DISTINCT endereco.cidade
+SELECT DISTINCT 
+    endereco.cidade
 FROM endereco, cliente, compra, item, produto, lote
 --joins
 WHERE endereco.cep = cliente.cep
@@ -34,8 +34,8 @@ AND produto.codLote = lote.codigo
 AND DATEDIFF(lote.dataFab,lote.dataValidade) < 90;
 
 -- 4 Todos os clientes cuja cidade é “Guarapuava” e sexo masculino.
-SELECT 
-    DISTINCT cliente.nome
+SELECT DISTINCT 
+    cliente.nome
 FROM cliente, endereco
 --joins
 WHERE cliente.cep = endereco.cep
@@ -44,7 +44,11 @@ AND cliente.sexo = 'M'
 AND endereco.cidade = 'Guarapuava';
 
 -- 5 Sexo das pessoas que moram na cidade que começa com a letra “G” e com a letra “C”.
-SELECT endereco.cidade, cliente.sexo, cliente.nome FROM endereco, cliente
+SELECT 
+    endereco.cidade, 
+    cliente.sexo, 
+    cliente.nome 
+FROM endereco, cliente
 --joins
 WHERE cliente.cep = endereco.cep
 --filters
@@ -54,15 +58,17 @@ OR endereco.cidade LIKE 'C%')
 ORDER BY endereco.cidade, cliente.sexo;
 
 -- 6 Quantidade total de produtos adquiridos com preço maior que R$ 10,00.
-SELECT SUM(quantidade) as 'Produtos Total' FROM produto, item
+SELECT 
+    SUM(quantidade) as 'Produtos Total' 
+FROM produto, item
 --joins
 WHERE produto.codigo = item.codProduto
 --filters
 AND produto.preco > 10;
 
 -- 7 Nome das pessoas que compraram mais de 5 peças de queijo e mais de 3 litros de leite.
-SELECT 
-    DISTINCT leite.nome 
+SELECT DISTINCT 
+    leite.nome 
 FROM (
         SELECT 
             DISTINCT cliente.nome
@@ -96,8 +102,8 @@ FROM (
 WHERE queijo.nome = leite.nome;
 
 -- 8 Cidade onde moram os clientes, em ordem alfabética crescente.
-SELECT 
-    DISTINCT endereco.cidade 
+SELECT DISTINCT 
+    endereco.cidade 
 FROM endereco, cliente
 --joins
 WHERE endereco.cep = cliente.cep
