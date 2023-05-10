@@ -310,7 +310,9 @@ SELECT produto.descricao, produto.codLote FROM produto;
 
 -- 19 As quantidades de queijo compradas pelos clientes de Guarapuava
 
--- 20 A data e a quantidade de leite compradas pelos clientes que moram em Curitiba ou em Guarapuava.21 – Nome dos clientes que compraram queijo, bem como a data da compra e quantidade.
+-- 20 A data e a quantidade de leite compradas pelos clientes que moram em Curitiba ou em Guarapuava.
+
+-- 21 – Nome dos clientes que compraram queijo, bem como a data da compra e quantidade.
 
 -- 22 Nome e cidade dos clientes, data da compra e tipo de pagamento, quantidade comprada e descrição dos produtos.
 
@@ -319,3 +321,15 @@ SELECT produto.descricao, produto.codLote FROM produto;
 -- 24 Nome e lote de todos os produtos que foram comprados com quantidade maior que 6.
 
 -- 25 Lote, validade e descrição dos produtos que não foram comprados.
+
+SELECT
+    DISTINCT lote.codigo,
+    DATE_FORMAT(lote.dataValidade, '%d/%m/%Y') as 'Data de Validade',
+    produto.descricao
+FROM produto, lote
+WHERE
+    produto.codLote = lote.codigo
+    AND produto.codigo NOT IN (
+        SELECT DISTINCT codProduto
+        FROM item
+    );
