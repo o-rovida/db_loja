@@ -303,6 +303,23 @@ SELECT produto.descricao, produto.codLote FROM produto;
 
 -- 19 As quantidades de queijo compradas pelos clientes de Guarapuava
 
+SELECT
+    cliente.nome,
+    SUM(item.quantidade) as 'Quantidade de Queijo'
+FROM
+    endereco,
+    cliente,
+    compra,
+    item,
+    produto
+WHERE
+    endereco.cep = cliente.cep
+    AND cliente.cpf = compra.cpfCliente
+    AND compra.codigo = item.codCompra
+    AND item.codProduto = produto.codigo
+    AND endereco.cidade = 'Guarapuava'
+    AND produto.descricao LIKE '%queijo%';
+
 -- 20 A data e a quantidade de leite compradas pelos clientes que moram em Curitiba ou em Guarapuava.
 
 SELECT
@@ -330,8 +347,7 @@ WHERE
 GROUP BY
     cliente.nome,
     compra.dataCompra
-ORDER BY 
-    compra.dataCompra ASC;
+ORDER BY compra.dataCompra ASC;
 
 -- 21 – Nome dos clientes que compraram queijo, bem como a data da compra e quantidade.
 
