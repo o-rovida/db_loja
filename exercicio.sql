@@ -60,9 +60,7 @@ SELECT
     endereco.cidade,
     cliente.sexo,
     cliente.nome
-FROM
-    endereco,
-    cliente
+FROM endereco, cliente
 WHERE
     cliente.cep = endereco.cep
     AND (
@@ -121,15 +119,12 @@ FROM (
                 )
             ) > 3
     ) as leite
-WHERE
-    queijo.nome = leite.nome;
+WHERE queijo.nome = leite.nome;
 
 -- 8 Cidade onde moram os clientes, em ordem alfabética crescente.
 
 SELECT DISTINCT endereco.cidade
-FROM
-    endereco,
-    cliente
+FROM endereco, cliente
 WHERE
     endereco.cep = cliente.cep
 ORDER BY endereco.cidade ASC;
@@ -178,8 +173,7 @@ WHERE
     AND item.codProduto = produto.codigo
     AND produto.descricao LIKE '%leite%'
     AND produto.preco BETWEEN 1 AND 1.8 --group
-GROUP BY
-    cliente.nome
+GROUP BY cliente.nome
 HAVING
     sum( (
             item.quantidade * produto.volume
@@ -203,8 +197,7 @@ WHERE
     AND item.codProduto = produto.codigo
     AND produto.descricao LIKE '%leite%'
     AND produto.preco BETWEEN 1 AND 1.8 --group
-GROUP BY
-    cliente.nome
+GROUP BY cliente.nome
 HAVING
     sum( (
             item.quantidade * produto.volume
@@ -318,7 +311,18 @@ SELECT produto.descricao, produto.codLote FROM produto;
 
 -- 23 Compras efetuadas no segundo trimestre do ano.
 
+SELECT * FROM compra
+WHERE MONTH(dataCompra) BETWEEN 4 AND 6;
+
 -- 24 Nome e lote de todos os produtos que foram comprados com quantidade maior que 6.
+
+SELECT
+    DISTINCT produto.descricao,
+    produto.codLote
+FROM produto, item
+WHERE
+    produto.codigo = item.codProduto
+    AND item.quantidade > 6;
 
 -- 25 Lote, validade e descrição dos produtos que não foram comprados.
 
@@ -330,6 +334,7 @@ FROM produto, lote
 WHERE
     produto.codLote = lote.codigo
     AND produto.codigo NOT IN (
-        SELECT DISTINCT codProduto
+        SELECT
+            DISTINCT codProduto
         FROM item
     );
