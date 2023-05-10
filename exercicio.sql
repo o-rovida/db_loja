@@ -305,14 +305,77 @@ SELECT produto.descricao, produto.codLote FROM produto;
 
 -- 20 A data e a quantidade de leite compradas pelos clientes que moram em Curitiba ou em Guarapuava.
 
+SELECT
+    cliente.nome,
+    DATE_FORMAT(compra.dataCompra, '%d/%m/%Y') as 'Data da Compra',
+    SUM(
+        item.quantidade * produto.volume
+    ) as 'Quantidade de Leite'
+FROM
+    endereco,
+    cliente,
+    compra,
+    item,
+    produto
+WHERE
+    endereco.cep = cliente.cep
+    AND cliente.cpf = compra.cpfCliente
+    AND compra.codigo = item.codCompra
+    AND item.codProduto = produto.codigo
+    AND (
+        endereco.cidade = 'Curitiba'
+        OR endereco.cidade = 'Guarapuava'
+    )
+    AND produto.descricao LIKE '%leite%'
+GROUP BY
+    cliente.nome,
+    compra.dataCompra
+ORDER BY 
+    compra.dataCompra ASC;
+
 -- 21 – Nome dos clientes que compraram queijo, bem como a data da compra e quantidade.
+
+SELECT
+    cliente.nome,
+    DATE_FORMAT(compra.dataCompra, '%d/%m/%Y') as 'Data da Compra',
+    item.quantidade
+FROM
+    cliente,
+    compra,
+    item,
+    produto
+WHERE
+    cliente.cpf = compra.cpfCliente
+    AND compra.codigo = item.codCompra
+    AND item.codProduto = produto.codigo
+    AND produto.descricao LIKE '%queijo%'
+ORDER BY cliente.nome ASC;
 
 -- 22 Nome e cidade dos clientes, data da compra e tipo de pagamento, quantidade comprada e descrição dos produtos.
 
+SELECT
+    cliente.nome,
+    endereco.cidade,
+    DATE_FORMAT(compra.dataCompra, '%d/%m/%Y') as 'Data da Compra',
+    compra.tipoPagamento,
+    item.quantidade,
+    produto.descricao
+FROM
+    endereco,
+    cliente,
+    compra,
+    item,
+    produto
+WHERE
+    endereco.cep = cliente.cep
+    AND cliente.cpf = compra.cpfCliente
+    AND compra.codigo = item.codCompra
+    AND item.codProduto = produto.codigo
+ORDER BY cliente.nome ASC;
+
 -- 23 Compras efetuadas no segundo trimestre do ano.
 
-SELECT * FROM compra
-WHERE MONTH(dataCompra) BETWEEN 4 AND 6;
+SELECT * FROM compra WHERE MONTH(dataCompra) BETWEEN 4 AND 6;
 
 -- 24 Nome e lote de todos os produtos que foram comprados com quantidade maior que 6.
 
