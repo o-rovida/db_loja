@@ -180,7 +180,8 @@ HAVING
         )
     ) > 4;
 
--- 12 Nome, Profissão e Sexo dos clientes que compram mais de 4 litros de leite cujo valor esteja entre R$ 1,00 e R$ 1,80, ordenados pelo sexo.
+-- 12 Nome, Profissão e Sexo dos clientes que compram mais de 4 litros de leite cujo valor esteja entre R$ 1,00 e R$ 1,80, 
+--ordenados pelo sexo.
 
 SELECT
     cliente.nome,
